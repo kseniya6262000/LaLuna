@@ -1,0 +1,2927 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La Luna — Beauty & Care, Астана</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       ГЛОБАЛЬНЫЕ CSS-ПЕРЕМЕННЫЕ
+    ============================================================ */
+    :root {
+      /* Цвета */
+      --color-dark:        #1A1C3A;   /* Глубокий синий — лого, акценты */
+      --color-bg:          #FAF8F7;   /* Тёплый белый — фон страницы */
+      --color-powder:      #E6D5CF;   /* Пудровый — акцент, плейсхолдеры */
+      --color-powder-deep: #D1BBAE;   /* Насыщенный пудровый */
+      --color-text:        #333333;   /* Основной текст */
+      --color-muted:       #666666;   /* Приглушённый текст */
+      --color-white:       #FFFFFF;
+      --color-wa:          #25D366;   /* WhatsApp зелёный */
+
+      /* Шрифты */
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body:    'Manrope', system-ui, sans-serif;
+
+      /* Скругления */
+      --radius-sm:  8px;
+      --radius-md:  12px;
+      --radius-lg:  24px;
+      --radius-xl:  40px;
+
+      /* Переходы */
+      --transition: 0.25s ease;
+    }
+
+    /* ============================================================
+       СБРОС И БАЗА
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* Скрытие для языковых блоков */
+    [data-lang] { display: none; }
+    [data-lang].lang-active { display: block; }
+
+    /* Инлайн-пары (span, em внутри текста) */
+    span[data-lang], em[data-lang] { display: none; }
+    span[data-lang].lang-active,
+    em[data-lang].lang-active { display: inline; }
+
+    /* ============================================================
+       ШАПКА — HEADER
+    ============================================================ */
+    .header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      padding: 0 clamp(20px, 5vw, 60px);
+      background: rgba(250, 248, 247, 0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(209, 187, 174, 0.30);
+      transition: box-shadow var(--transition);
+    }
+
+    .header.scrolled {
+      box-shadow: 0 4px 24px rgba(26, 28, 58, 0.07);
+    }
+
+    /* --- Лого --- */
+    .logo {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      line-height: 1;
+      margin-right: auto;
+      cursor: pointer;
+      gap: 3px;
+      text-decoration: none;
+    }
+
+    /* Логотип построен как SVG-текст, чтобы точно воспроизвести
+       типографику из скрина: "La" маленькое + "LUNA" крупнее,
+       всё в одной строке, засечечный шрифт. */
+    .logo__wordmark {
+      display: flex;
+      align-items: baseline;
+      gap: 0;
+      font-family: var(--font-display);
+      font-weight: 600;
+      color: var(--color-dark);
+      line-height: 1;
+      text-transform: none;
+      letter-spacing: 0.04em;
+    }
+
+    .logo__la {
+      font-size: clamp(16px, 2.2vw, 20px);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+    }
+
+    .logo__space {
+      display: inline-block;
+      width: 0.25em;
+    }
+
+    .logo__luna {
+      font-size: clamp(22px, 3.2vw, 30px);
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .logo__sub {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(10px, 1.1vw, 12px);
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: var(--color-dark);
+      opacity: 0.65;
+      margin-top: 1px;
+    }
+
+    /* --- Навигация (центр) --- */
+    .nav {
+      display: none; /* скрыта по умолчанию на мобильных */
+      gap: 36px;
+      list-style: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @media (min-width: 900px) {
+      .nav { display: flex; }
+    }
+
+    .nav a {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--color-muted);
+      text-transform: uppercase;
+      transition: color var(--transition);
+      white-space: nowrap;
+    }
+
+    .nav a:hover { color: var(--color-dark); }
+
+    /* --- Правая часть шапки --- */
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-left: auto;
+    }
+
+    /* Переключатель языка */
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--color-muted);
+    }
+
+    .lang-toggle button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--color-muted);
+      transition: color var(--transition), background var(--transition);
+    }
+
+    .lang-toggle button.active {
+      color: var(--color-dark);
+      background: rgba(26, 28, 58, 0.07);
+    }
+
+    .lang-toggle .separator {
+      color: var(--color-powder-deep);
+      user-select: none;
+    }
+
+    /* WhatsApp кнопка */
+    .btn-wa {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--color-wa);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .btn-wa:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(37, 211, 102, 0.35);
+    }
+
+    .btn-wa svg {
+      width: 20px; height: 20px;
+      fill: white;
+    }
+
+    /* Бургер */
+    .burger {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    @media (min-width: 900px) { .burger { display: none; } }
+
+    .burger span {
+      display: block;
+      height: 1.5px;
+      background: var(--color-dark);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .burger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .burger.open span:nth-child(2) { opacity: 0; }
+    .burger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* Мобильное меню */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 68px; left: 0; right: 0;
+      background: rgba(250, 248, 247, 0.97);
+      backdrop-filter: blur(14px);
+      padding: 28px clamp(20px, 5vw, 60px) 36px;
+      border-bottom: 1px solid var(--color-powder);
+      z-index: 99;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .mobile-menu.open { display: flex; }
+    @media (min-width: 900px) { .mobile-menu { display: none !important; } }
+
+    .mobile-menu a {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--color-text);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(209, 187, 174, 0.35);
+      padding-bottom: 16px;
+    }
+
+    /* ============================================================
+       HERO — ГЛАВНЫЙ ЭКРАН
+    ============================================================ */
+    .hero {
+      min-height: 100svh;
+      padding-top: 68px; /* компенсация фиксированной шапки */
+      display: grid;
+      grid-template-columns: 1fr;
+      align-items: center;
+      padding-left: clamp(20px, 5vw, 60px);
+      padding-right: clamp(20px, 5vw, 60px);
+      gap: 48px;
+    }
+
+    @media (min-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr 1fr;
+        gap: 64px;
+      }
+    }
+
+    /* --- Текстовый блок --- */
+    .hero-text {
+      order: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    @media (min-width: 900px) {
+      .hero-text { order: 1; }
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-powder-deep);
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: var(--color-powder-deep);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(38px, 6vw, 72px);
+      font-weight: 300;
+      line-height: 1.12;
+      letter-spacing: -0.01em;
+      color: var(--color-dark);
+    }
+
+    .hero-title em {
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    .hero-body {
+      font-size: clamp(15px, 1.5vw, 17px);
+      font-weight: 300;
+      color: var(--color-muted);
+      line-height: 1.75;
+      max-width: 440px;
+    }
+
+    /* Тег-бонус */
+    .hero-bonus {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(230, 213, 207, 0.40);
+      border: 1px solid var(--color-powder);
+      border-radius: var(--radius-xl);
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-dark);
+      width: fit-content;
+    }
+
+    .hero-bonus .icon { font-size: 16px; }
+
+    /* CTA кнопки */
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+      margin-top: 4px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 32px;
+      background: var(--color-dark);
+      color: var(--color-white);
+      border-radius: var(--radius-md);
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+      white-space: nowrap;
+    }
+
+    .btn-primary:hover {
+      background: #2a2d56;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(26, 28, 58, 0.22);
+    }
+
+    .btn-primary svg {
+      width: 18px; height: 18px;
+      fill: white;
+      flex-shrink: 0;
+    }
+
+    .btn-secondary {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-muted);
+      letter-spacing: 0.03em;
+      border-bottom: 1px solid var(--color-powder-deep);
+      padding-bottom: 2px;
+      transition: color var(--transition);
+    }
+
+    .btn-secondary:hover { color: var(--color-dark); }
+
+    /* --- Плейсхолдер фото --- */
+    .hero-visual {
+      order: 1;
+      position: relative;
+    }
+
+    @media (min-width: 900px) {
+      .hero-visual {
+        order: 2;
+        height: calc(100svh - 68px - 64px);
+        max-height: 680px;
+      }
+    }
+
+    .photo-placeholder {
+      width: 100%;
+      height: 320px;
+      background: linear-gradient(145deg, var(--color-powder) 0%, var(--color-powder-deep) 100%);
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: rgba(26, 28, 58, 0.45);
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (min-width: 900px) {
+      .photo-placeholder {
+        height: 100%;
+        border-radius: var(--radius-xl);
+      }
+    }
+
+    /* Декоративные круги внутри плейсхолдера */
+    .photo-placeholder::before,
+    .photo-placeholder::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .photo-placeholder::before {
+      width: 260px; height: 260px;
+      top: -60px; right: -60px;
+    }
+
+    .photo-placeholder::after {
+      width: 160px; height: 160px;
+      bottom: -40px; left: -40px;
+    }
+
+    .placeholder-icon {
+      font-size: 40px;
+      opacity: 0.55;
+      z-index: 1;
+    }
+
+    .placeholder-label {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      z-index: 1;
+    }
+
+    /* Декоративный бэдж "Астана" поверх фото */
+    .photo-badge {
+      position: absolute;
+      bottom: 24px;
+      left: -20px;
+      background: var(--color-white);
+      border-radius: var(--radius-md);
+      padding: 12px 18px;
+      box-shadow: 0 8px 32px rgba(26, 28, 58, 0.12);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 2;
+    }
+
+    @media (max-width: 899px) {
+      .photo-badge { left: 16px; bottom: 16px; }
+    }
+
+    .badge-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--color-wa);
+      animation: pulse 2s infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0.5); }
+      50%       { box-shadow: 0 0 0 6px rgba(37,211,102,0); }
+    }
+
+    .badge-text {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-dark);
+      white-space: nowrap;
+    }
+
+    .badge-sub {
+      font-size: 10px;
+      font-weight: 400;
+      color: var(--color-muted);
+    }
+
+    /* ============================================================
+       УТИЛИТЫ
+    ============================================================ */
+    .visually-hidden {
+      position: absolute;
+      width: 1px; height: 1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+    }
+
+    /* ============================================================
+       ОБЩИЕ ЭЛЕМЕНТЫ СЕКЦИЙ
+    ============================================================ */
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-head {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 56px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 300;
+      color: var(--color-dark);
+      line-height: 1.15;
+      margin-top: 12px;
+    }
+
+    .section-title em { font-style: italic; }
+
+    .section-subnote {
+      margin-top: 12px;
+      font-size: 14px;
+      color: var(--color-muted);
+    }
+
+    /* Кнопка btn-primary как статичный элемент вне hero (без белого текста по умолчанию из svg fill) */
+    .btn-primary--static {
+      display: inline-flex;
+    }
+
+    /* ============================================================
+       О НАС — ABOUT
+    ============================================================ */
+    .about-section {
+      padding: 100px clamp(20px, 5vw, 60px);
+      background-color: var(--color-bg);
+      position: relative;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 48px;
+      align-items: center;
+    }
+
+    .about-text {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      text-align: left;
+    }
+
+    .about-lead {
+      font-size: clamp(16px, 1.6vw, 18px);
+      font-weight: 400;
+      color: var(--color-text);
+      line-height: 1.7;
+    }
+
+    .about-body {
+      font-size: clamp(15px, 1.4vw, 16px);
+      font-weight: 300;
+      color: var(--color-muted);
+      line-height: 1.75;
+    }
+
+    .about-body em { font-style: italic; }
+
+    .about-quote {
+      padding-left: 20px;
+      border-left: 2px solid var(--color-powder-deep);
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-style: italic;
+      color: var(--color-dark);
+      margin: 8px 0;
+    }
+
+    .about-founder {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .founder-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background-color: var(--color-powder);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .founder-name {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--color-dark);
+    }
+
+    .founder-role {
+      font-size: 12px;
+      color: var(--color-muted);
+    }
+
+    .about-cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .about-card {
+      padding: 28px;
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(230, 213, 207, 0.6);
+      box-shadow: 0 10px 30px rgba(26,28,58,0.03);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .about-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 36px rgba(26,28,58,0.07);
+    }
+
+    .about-card__icon { font-size: 24px; margin-bottom: 12px; }
+
+    .about-card__title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--color-dark);
+      margin-bottom: 8px;
+    }
+
+    .about-card__text {
+      font-size: 14px;
+      color: var(--color-muted);
+      line-height: 1.6;
+    }
+
+    /* ============================================================
+       УСЛУГИ, АКЦИИ И ПРАЙС
+    ============================================================ */
+    .services-section {
+      padding: 100px clamp(20px, 5vw, 60px);
+      background: linear-gradient(180deg, var(--color-bg) 0%, #F4ECE9 100%);
+    }
+
+    .promo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 64px;
+    }
+
+    .promo-card {
+      padding: 36px 28px;
+      border-radius: var(--radius-xl);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .promo-card--dark {
+      background: var(--color-dark);
+      color: var(--color-white);
+    }
+
+    .promo-card__blob {
+      position: absolute;
+      top: -30px; right: -30px;
+      width: 140px; height: 140px;
+      background: rgba(230,213,207,0.12);
+      border-radius: 50%;
+    }
+
+    .promo-card--outline {
+      background: var(--color-white);
+      border: 2px solid var(--color-powder);
+    }
+
+    .promo-card--gradient {
+      background: linear-gradient(135deg, #FAF8F7 0%, #E6D5CF 100%);
+      border: 1px solid var(--color-powder-deep);
+    }
+
+    .promo-tag {
+      display: inline-block;
+      background: #E84A7F;
+      color: var(--color-white);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .promo-tag--light {
+      background: var(--color-powder);
+      color: var(--color-dark);
+    }
+
+    .promo-tag--dark {
+      background: var(--color-dark);
+      color: var(--color-white);
+    }
+
+    .promo-title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 600;
+      margin: 16px 0 8px;
+      line-height: 1.2;
+    }
+
+    .promo-title small {
+      font-size: 20px;
+      font-weight: 300;
+      opacity: 0.9;
+    }
+
+    .promo-title--dark { color: var(--color-dark); }
+    .promo-title--dark small { color: var(--color-muted); opacity: 1; }
+
+    .promo-desc {
+      font-size: 13px;
+      opacity: 0.75;
+      margin-bottom: 4px;
+    }
+
+    .promo-desc--dark {
+      opacity: 1;
+      color: var(--color-muted);
+    }
+
+    .promo-price {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .promo-price__now {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--color-white);
+    }
+
+    .promo-price__now--dark { color: var(--color-dark); }
+    .promo-price__now--sm { font-size: 28px; }
+
+    .promo-price__old {
+      font-size: 18px;
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
+
+    .promo-price__note {
+      font-size: 13px;
+      color: var(--color-muted);
+    }
+
+    .promo-cta {
+      display: block;
+      text-align: center;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 14px;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .promo-cta--light {
+      background: var(--color-white);
+      color: var(--color-dark);
+    }
+
+    .promo-cta--dark {
+      background: var(--color-dark);
+      color: var(--color-white);
+    }
+
+    .promo-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(26,28,58,0.18);
+    }
+
+    /* --- Прайс-блок с вкладками --- */
+    .price-block {
+      background: var(--color-white);
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(230, 213, 207, 0.6);
+      padding: clamp(24px, 4vw, 48px);
+    }
+
+    .price-block__head {
+      margin-bottom: 28px;
+    }
+
+    .price-block__title {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3vw, 32px);
+      font-weight: 600;
+      color: var(--color-dark);
+    }
+
+    .price-block__note {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--color-muted);
+      max-width: 640px;
+      line-height: 1.6;
+    }
+
+    .price-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+
+    .price-tab {
+      background: var(--color-bg);
+      border: 1px solid rgba(209, 187, 174, 0.4);
+      cursor: pointer;
+      padding: 10px 18px;
+      border-radius: var(--radius-md);
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-muted);
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+
+    .price-tab:hover {
+      border-color: var(--color-powder-deep);
+      color: var(--color-dark);
+    }
+
+    .price-tab.active {
+      background: var(--color-dark);
+      border-color: var(--color-dark);
+      color: var(--color-white);
+    }
+
+    .price-panel { display: none; }
+    .price-panel.active { display: block; animation: fadein 0.3s ease; }
+
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .price-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .price-list li {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 14px 4px;
+      border-bottom: 1px dashed rgba(209, 187, 174, 0.45);
+    }
+
+    .price-list li:last-child { border-bottom: none; }
+
+    .price-list__name {
+      font-size: 15px;
+      color: var(--color-text);
+      font-weight: 400;
+    }
+
+    .price-list__dots {
+      flex: 1;
+      border-bottom: 1px dotted rgba(102,102,102,0.25);
+      margin-bottom: 5px;
+      min-width: 12px;
+    }
+
+    .price-list__value {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-dark);
+      white-space: nowrap;
+    }
+
+    /* ============================================================
+       ОТЗЫВЫ
+    ============================================================ */
+    .reviews-section {
+      padding: 100px clamp(20px, 5vw, 60px);
+      background-color: var(--color-bg);
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .review-card {
+      background: var(--color-white);
+      padding: 32px;
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(230,213,207,0.6);
+      box-shadow: 0 10px 30px rgba(26,28,58,0.03);
+    }
+
+    .review-stars { color: #F59E0B; margin-bottom: 12px; letter-spacing: 2px; }
+
+    .review-text {
+      font-size: 14px;
+      color: var(--color-text);
+      line-height: 1.7;
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+
+    .review-author {
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--color-dark);
+    }
+
+    .reviews-cta { text-align: center; }
+
+    /* ============================================================
+       КОНТАКТЫ И ФОРМА ЗАПИСИ
+    ============================================================ */
+    .contacts-section {
+      padding: 100px clamp(20px, 5vw, 60px);
+      background: linear-gradient(180deg, #F4ECE9 0%, var(--color-bg) 100%);
+    }
+
+    .contacts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
+      align-items: start;
+    }
+
+    .contacts-info {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .contact-row__icon {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--color-white);
+      border: 1px solid rgba(230,213,207,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+
+    .contact-row__label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-powder-deep);
+      margin-bottom: 2px;
+    }
+
+    .contact-row__value {
+      font-size: 15px;
+      color: var(--color-dark);
+      font-weight: 500;
+    }
+
+    .contact-row__value a { text-decoration: underline; text-underline-offset: 2px; }
+    .contact-row__value a:hover { color: var(--color-powder-deep); }
+
+    .contacts-map {
+      width: 100%;
+      height: 280px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid rgba(230,213,207,0.6);
+      background: var(--color-powder);
+    }
+
+    .contacts-map iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+    .booking-card {
+      background: var(--color-white);
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(230, 213, 207, 0.6);
+      padding: clamp(24px, 4vw, 40px);
+      box-shadow: 0 10px 30px rgba(26,28,58,0.04);
+    }
+
+    .booking-title {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--color-dark);
+      margin-bottom: 8px;
+    }
+
+    .booking-subtitle {
+      font-size: 13px;
+      color: var(--color-muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .booking-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .booking-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+    }
+
+    .booking-field input,
+    .booking-field select {
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: normal;
+      color: var(--color-text);
+      padding: 13px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(209, 187, 174, 0.5);
+      background: var(--color-bg);
+      transition: border-color var(--transition);
+    }
+
+    .booking-field input:focus,
+    .booking-field select:focus {
+      outline: none;
+      border-color: var(--color-powder-deep);
+    }
+
+    .booking-submit {
+      justify-content: center;
+      margin-top: 4px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    /* ============================================================
+       ФУТЕР
+    ============================================================ */
+    .footer {
+      background: var(--color-dark);
+      color: rgba(255,255,255,0.85);
+      padding: 72px clamp(20px, 5vw, 60px) 28px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 40px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .footer-logo {
+      color: var(--color-white);
+    }
+
+    .footer-tagline {
+      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+      max-width: 240px;
+      line-height: 1.6;
+    }
+
+    .footer-wa {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-white);
+      width: fit-content;
+      margin-top: 4px;
+    }
+
+    .footer-wa svg { width: 18px; height: 18px; fill: var(--color-wa); }
+
+    .footer-col {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-col__title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 4px;
+    }
+
+    .footer-col a,
+    .footer-static-text {
+      font-size: 14px;
+      color: rgba(255,255,255,0.75);
+      transition: color var(--transition);
+    }
+
+    .footer-col a:hover { color: var(--color-white); }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 24px auto 0;
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* ============================================================
+       SCROLL REVEAL
+    ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ============================================================
+       ДО / ПОСЛЕ + ПОРТФОЛИО
+    ============================================================ */
+    .transformations-section {
+      padding: 100px clamp(20px, 5vw, 60px);
+      background-color: var(--color-bg);
+      overflow: hidden;
+    }
+
+    /* ---- Feature slider ---- */
+    .ba-feature {
+      max-width: 880px;
+      margin: 0 auto 72px;
+    }
+
+    .ba-viewport {
+      position: relative;
+      width: 100%;
+      height: clamp(320px, 46vw, 460px);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(26,28,58,0.16);
+      cursor: ew-resize;
+      user-select: none;
+      touch-action: pan-y;
+      background: var(--color-dark);
+    }
+
+    .ba-slide {
+      position: absolute;
+      inset: 0;
+      display: none;
+    }
+    .ba-slide.active { display: block; }
+
+    .ba-photo {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .ba-icon {
+      font-size: clamp(48px, 8vw, 84px);
+      filter: drop-shadow(0 8px 20px rgba(0,0,0,0.25));
+    }
+
+    /* "После" — насыщенный, тёплый, ясный */
+    .ba-photo--after {
+      z-index: 1;
+    }
+    .ba-photo--lashes.ba-photo--after { background: linear-gradient(135deg, #EBD8CD 0%, #E6D5CF 45%, #D1BBAE 100%); }
+    .ba-photo--brows.ba-photo--after  { background: linear-gradient(135deg, #F3E4DC 0%, #E6BFAE 50%, #C99A83 100%); }
+    .ba-photo--nails.ba-photo--after  { background: linear-gradient(135deg, #F6E9E2 0%, #E8B9C6 50%, #D88FA5 100%); }
+    .ba-photo--hair.ba-photo--after   { background: linear-gradient(135deg, #EFE1D8 0%, #D9B79F 50%, #B98F6E 100%); }
+
+    /* "До" — приглушённый, холодный, в тени (та же гамма, но затемнена и обесцвечена) */
+    .ba-photo--before {
+      z-index: 2;
+      clip-path: inset(0 50% 0 0);
+      filter: grayscale(0.85) brightness(0.72) contrast(0.92);
+    }
+    .ba-photo--lashes.ba-photo--before { background: linear-gradient(135deg, #EBD8CD 0%, #E6D5CF 45%, #D1BBAE 100%); }
+    .ba-photo--brows.ba-photo--before  { background: linear-gradient(135deg, #F3E4DC 0%, #E6BFAE 50%, #C99A83 100%); }
+    .ba-photo--nails.ba-photo--before  { background: linear-gradient(135deg, #F6E9E2 0%, #E8B9C6 50%, #D88FA5 100%); }
+    .ba-photo--hair.ba-photo--before   { background: linear-gradient(135deg, #EFE1D8 0%, #D9B79F 50%, #B98F6E 100%); }
+
+    .ba-img { width: 100%; height: 100%; object-fit: cover; }
+
+    .ba-tag {
+      position: absolute;
+      left: 20px;
+      bottom: 20px;
+      z-index: 5;
+      background: rgba(26, 28, 58, 0.72);
+      backdrop-filter: blur(6px);
+      color: var(--color-white);
+      padding: 9px 16px;
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+
+    .ba-label {
+      position: absolute;
+      top: 18px;
+      z-index: 5;
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-white);
+      background: rgba(26, 28, 58, 0.55);
+      padding: 6px 12px;
+      border-radius: 20px;
+      pointer-events: none;
+    }
+    .ba-label--before { left: 18px; }
+    .ba-label--after { right: 18px; }
+
+    /* ---- Лунная ручка (сигнатурный элемент) ---- */
+    .ba-handle {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: translateX(-50%);
+      cursor: grab;
+    }
+    .ba-handle:active { cursor: grabbing; }
+
+    .ba-handle__line {
+      width: 2px;
+      flex: 1;
+      background: rgba(255,255,255,0.85);
+      box-shadow: 0 0 12px rgba(255,255,255,0.5);
+    }
+
+    .ba-handle__moon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--color-dark);
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      margin: 8px 0;
+      box-shadow: 0 0 0 4px rgba(255,255,255,0.9), 0 8px 24px rgba(26,28,58,0.4);
+      transition: box-shadow var(--transition);
+    }
+    .ba-handle:hover .ba-handle__moon,
+    .ba-handle:focus-visible .ba-handle__moon {
+      box-shadow: 0 0 0 4px rgba(255,255,255,0.95), 0 0 28px 6px rgba(230,213,207,0.85);
+    }
+
+    .ba-handle__moon-shadow {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #FFF8EF 0%, #F0DFCB 55%, #D1BBAE 100%);
+      transform: translateX(-100%);
+      transition: transform 0.05s linear;
+    }
+
+    /* ---- Мини-вкладки ---- */
+    .ba-thumbs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .ba-thumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--color-white);
+      border: 1px solid rgba(209, 187, 174, 0.5);
+      padding: 10px 18px;
+      border-radius: 30px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-muted);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .ba-thumb:hover { border-color: var(--color-powder-deep); color: var(--color-dark); }
+    .ba-thumb.active {
+      background: var(--color-dark);
+      border-color: var(--color-dark);
+      color: var(--color-white);
+    }
+
+    /* ---- Портфолио / карусель работ мастеров ---- */
+    .portfolio-block { max-width: 1200px; margin: 0 auto; }
+
+    .portfolio-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+
+    .portfolio-title {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3vw, 32px);
+      font-weight: 600;
+      color: var(--color-dark);
+    }
+
+    .portfolio-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .portfolio-chip {
+      background: transparent;
+      border: 1px solid rgba(209, 187, 174, 0.5);
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-muted);
+      cursor: pointer;
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+    .portfolio-chip:hover { border-color: var(--color-powder-deep); color: var(--color-dark); }
+    .portfolio-chip.active {
+      background: var(--color-powder-deep);
+      border-color: var(--color-powder-deep);
+      color: var(--color-white);
+    }
+
+    .portfolio-carousel {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .portfolio-track {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      padding: 6px 2px 20px;
+      flex: 1;
+      scrollbar-width: none;
+    }
+    .portfolio-track::-webkit-scrollbar { display: none; }
+
+    .portfolio-card {
+      position: relative;
+      flex: 0 0 auto;
+      width: clamp(220px, 26vw, 268px);
+      height: 340px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      scroll-snap-align: start;
+      box-shadow: 0 12px 30px rgba(26,28,58,0.08);
+      transition: transform var(--transition);
+    }
+    .portfolio-card:hover { transform: translateY(-6px); }
+    .portfolio-card.hidden { display: none; }
+
+    .portfolio-photo {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.5s ease;
+    }
+    .portfolio-card:hover .portfolio-photo { transform: scale(1.06); }
+
+    .portfolio-icon { font-size: 56px; filter: drop-shadow(0 8px 18px rgba(0,0,0,0.2)); }
+
+    .portfolio-photo--nails    { background: linear-gradient(160deg, #F6E9E2 0%, #E8B9C6 100%); }
+    .portfolio-photo--nails-2  { background: linear-gradient(160deg, #E6D5CF 0%, #D88FA5 100%); }
+    .portfolio-photo--lashes   { background: linear-gradient(160deg, #EBD8CD 0%, #A6899E 100%); }
+    .portfolio-photo--lashes-2 { background: linear-gradient(160deg, #D1BBAE 0%, #8A7590 100%); }
+    .portfolio-photo--brows    { background: linear-gradient(160deg, #F3E4DC 0%, #C99A83 100%); }
+    .portfolio-photo--brows-2  { background: linear-gradient(160deg, #E6BFAE 0%, #A97355 100%); }
+    .portfolio-photo--makeup   { background: linear-gradient(160deg, #F0DCE3 0%, #C2597D 100%); }
+    .portfolio-photo--makeup-2 { background: linear-gradient(160deg, #EFE1D8 0%, #B98F6E 100%); }
+
+    .portfolio-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 20px;
+      background: linear-gradient(180deg, rgba(26,28,58,0) 35%, rgba(26,28,58,0.88) 100%);
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity var(--transition), transform var(--transition);
+    }
+    .portfolio-card:hover .portfolio-overlay,
+    .portfolio-card:focus-within .portfolio-overlay {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .portfolio-info { margin-bottom: 14px; color: var(--color-white); }
+    .portfolio-master { font-family: var(--font-display); font-size: 20px; font-weight: 600; }
+    .portfolio-service { font-size: 13px; opacity: 0.85; margin-top: 2px; }
+
+    .portfolio-cta {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-white);
+      border-bottom: 1px solid rgba(255,255,255,0.5);
+      padding-bottom: 2px;
+      width: fit-content;
+      transition: border-color var(--transition);
+    }
+    .portfolio-cta:hover { border-color: var(--color-white); }
+
+    .portfolio-arrow {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--color-white);
+      border: 1px solid rgba(230,213,207,0.7);
+      color: var(--color-dark);
+      font-size: 22px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition);
+      box-shadow: 0 8px 20px rgba(26,28,58,0.08);
+    }
+    .portfolio-arrow:hover {
+      background: var(--color-dark);
+      color: var(--color-white);
+      transform: scale(1.06);
+    }
+
+    @media (max-width: 640px) {
+      .portfolio-arrow { display: none; }
+      .ba-label { font-size: 10px; padding: 5px 10px; }
+      .ba-handle__moon { width: 40px; height: 40px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       ШАПКА
+  ============================================================ -->
+  <header class="header" id="header" role="banner">
+
+    <!-- Лого -->
+    <a href="#" class="logo" aria-label="La Luna — на главную">
+      <div class="logo__wordmark">
+        <span class="logo__la">La</span><span class="logo__space"></span><span class="logo__luna">Luna</span>
+      </div>
+      <span class="logo__sub">новое пространство красоты</span>
+    </a>
+
+    <!-- Навигация (десктоп) -->
+    <nav aria-label="Основная навигация">
+      <ul class="nav">
+        <li>
+          <a href="#about">
+            <span data-lang="ru" class="lang-active">О нас</span>
+            <span data-lang="kz">Біз туралы</span>
+          </a>
+        </li>
+        <li>
+          <a href="#services">
+            <span data-lang="ru" class="lang-active">Услуги</span>
+            <span data-lang="kz">Қызметтер</span>
+          </a>
+        </li>
+        <li>
+          <a href="#price">
+            <span data-lang="ru" class="lang-active">Прайс</span>
+            <span data-lang="kz">Бағалар</span>
+          </a>
+        </li>
+        <li>
+          <a href="#transformations">
+            <span data-lang="ru" class="lang-active">Портфолио</span>
+            <span data-lang="kz">Портфолио</span>
+          </a>
+        </li>
+        <li>
+          <a href="#reviews">
+            <span data-lang="ru" class="lang-active">Отзывы</span>
+            <span data-lang="kz">Пікірлер</span>
+          </a>
+        </li>
+        <li>
+          <a href="#contacts">
+            <span data-lang="ru" class="lang-active">Контакты</span>
+            <span data-lang="kz">Байланыс</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Правая часть: язык + WhatsApp + бургер -->
+    <div class="header-right">
+
+      <!-- Переключатель языков -->
+      <div class="lang-toggle" role="group" aria-label="Выбор языка">
+        <button id="btn-ru" class="active" onclick="setLang('ru')" aria-pressed="true">RU</button>
+        <span class="separator" aria-hidden="true">|</span>
+        <button id="btn-kz" onclick="setLang('kz')" aria-pressed="false">KZ</button>
+      </div>
+
+      <!-- WhatsApp -->
+      <a href="https://wa.me/77054620189" class="btn-wa" target="_blank" rel="noopener" aria-label="Написать в WhatsApp">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+      </a>
+
+      <!-- Бургер (мобильный) -->
+      <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Мобильное меню -->
+  <nav class="mobile-menu" id="mobile-menu" aria-label="Мобильная навигация">
+    <a href="#about" class="mobile-link">
+      <span data-lang="ru" class="lang-active">О нас</span>
+      <span data-lang="kz">Біз туралы</span>
+    </a>
+    <a href="#services" class="mobile-link">
+      <span data-lang="ru" class="lang-active">Услуги</span>
+      <span data-lang="kz">Қызметтер</span>
+    </a>
+    <a href="#price" class="mobile-link">
+      <span data-lang="ru" class="lang-active">Прайс</span>
+      <span data-lang="kz">Бағалар</span>
+    </a>
+    <a href="#transformations" class="mobile-link">
+      <span data-lang="ru" class="lang-active">Портфолио</span>
+      <span data-lang="kz">Портфолио</span>
+    </a>
+    <a href="#reviews" class="mobile-link">
+      <span data-lang="ru" class="lang-active">Отзывы</span>
+      <span data-lang="kz">Пікірлер</span>
+    </a>
+    <a href="#contacts" class="mobile-link">
+      <span data-lang="ru" class="lang-active">Контакты</span>
+      <span data-lang="kz">Байланыс</span>
+    </a>
+  </nav>
+
+
+  <!-- ============================================================
+       HERO — ГЛАВНЫЙ ЭКРАН
+  ============================================================ -->
+  <main>
+    <section class="hero" aria-label="Главный экран">
+
+      <!-- Текст -->
+      <div class="hero-text">
+
+        <span class="hero-eyebrow">
+          <span data-lang="ru" class="lang-active">Астана · 2026</span>
+          <span data-lang="kz">Астана · 2026</span>
+        </span>
+
+        <!-- H1 -->
+        <h1 class="hero-title">
+          <span data-lang="ru" class="lang-active">
+            Новое<br>
+            пространство<br>
+            <em>красоты</em><br>
+            в Астане
+          </span>
+          <span data-lang="kz">
+            Астанадағы<br>
+            жаңа сұлулық<br>
+            <em>кеңістігі</em>
+          </span>
+        </h1>
+
+        <!-- Подзаголовок -->
+        <p class="hero-body">
+          <span data-lang="ru" class="lang-active">
+            Маникюр, ресницы, брови и депиляция.<br>
+            Экономьте время с нашими сетами в 4–6 рук.
+          </span>
+          <span data-lang="kz">
+            Маникюр, кірпік, қас және депиляция.<br>
+            4–6 қолмен жасалатын сеттермен уақытыңызды үнемдеңіз.
+          </span>
+        </p>
+
+        <!-- Бонус -->
+        <div class="hero-bonus">
+          <span class="icon">🎁</span>
+          <span>
+            <span data-lang="ru" class="lang-active">Дарим <strong>1 000 ₸</strong> на первый визит</span>
+            <span data-lang="kz">Алғашқы келуіңізге <strong>1 000 ₸</strong> сыйлаймыз</span>
+          </span>
+        </div>
+
+        <!-- CTA -->
+        <div class="hero-actions">
+          <a href="https://wa.me/77054620189" class="btn-primary" target="_blank" rel="noopener">
+            <!-- WhatsApp иконка внутри кнопки -->
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            <span data-lang="ru" class="lang-active">Записаться онлайн</span>
+            <span data-lang="kz">Онлайн жазылу</span>
+          </a>
+
+          <a href="#services" class="btn-secondary">
+            <span data-lang="ru" class="lang-active">Смотреть услуги</span>
+            <span data-lang="kz">Қызметтерді қарау</span>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Визуал / плейсхолдер фото -->
+      <div class="hero-visual">
+        <div class="photo-placeholder" role="img" aria-label="Фото салона — скоро будет">
+          <span class="placeholder-icon" aria-hidden="true">🌙</span>
+          <span class="placeholder-label">
+            <span data-lang="ru" class="lang-active">Фото салона</span>
+            <span data-lang="kz">Салон фотосы</span>
+          </span>
+        </div>
+
+        <!-- Бэдж "Онлайн" -->
+        <div class="photo-badge" aria-hidden="true">
+          <span class="badge-dot"></span>
+          <div>
+            <div class="badge-text">
+              <span data-lang="ru" class="lang-active">Принимаем записи</span>
+              <span data-lang="kz">Жазылуды қабылдаймыз</span>
+            </div>
+            <div class="badge-sub">WhatsApp · 24/7</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============================================================
+         О НАС (ABOUT US) — Философия ритуала красоты La Luna
+    ============================================================ -->
+    <section id="about" class="about-section">
+      <div class="section-inner">
+
+        <div class="section-head">
+          <span class="hero-eyebrow">
+            <span data-lang="ru" class="lang-active">История и ценности</span>
+            <span data-lang="kz">Тарихы және құндылықтары</span>
+          </span>
+          <h2 class="section-title">
+            <span data-lang="ru" class="lang-active">Красота — это не рутина, а <em>ритуал заботы</em> о себе</span>
+            <span data-lang="kz">Сұлулық — күнделікті күйбің емес, <em>өзіңе күтім жасау</em> рәсімі</span>
+          </h2>
+        </div>
+
+        <div class="about-grid">
+
+          <div class="about-text">
+            <p class="about-lead">
+              <span data-lang="ru" class="lang-active">
+                Идея открыть <strong>La Luna</strong> родилась из искреннего желания создать пространство, где женщина может остановиться, снова почувствовать себя, наполниться энергией и гармонией.
+              </span>
+              <span data-lang="kz">
+                <strong>La Luna</strong> ашу идеясы әйел адам тоқтап, өзін қайта сезініп, шабыттанып, демалатын кеңістік құру тілегінен туындады.
+              </span>
+            </p>
+            <p class="about-body">
+              <span data-lang="ru" class="lang-active">
+                Создавая студию в самом сердце левобережья Астаны на <em>Бухар Жирау 33/1</em>, мы стремились воплотить эстетику утонченного покоя. Мягкое мерцание свечей, обволакивающие ароматы, тишина и ортопедические кресла-реклайнеры, в которых растворяется усталость дня. Каждая деталь в La Luna соткана с любовью, чтобы вы могли забыть о спешке мегаполиса и насладиться моментом абсолютной заботы о себе.
+              </span>
+              <span data-lang="kz">
+                Астананың сол жағалауындағы студиямызды құра отырып, біз нәзік тыныштық пен жайлылық эстетикасын бейнелеуге тырыстық. Жұмсақ жарық, хош иістер мен күндізгі шаршауды ұмыттыратын ортопедиялық креслолар. Мұндағы әрбір бөлшек үлкен қала қарбаласын ұмытып, сұлулық сәтінен ләззат алуыңыз үшін махаббатпен жасалған.
+              </span>
+            </p>
+
+            <blockquote class="about-quote">
+              <span data-lang="ru" class="lang-active">«Мы хотим, чтобы каждый шаг в La Luna дарил ощущение: "Вот оно. Моё место"»</span>
+              <span data-lang="kz">«La Luna-ға жасалған әрбір қадам: "Міне, менің орным" деген сезім сыйлағанын қалаймыз»</span>
+            </blockquote>
+
+            <div class="about-founder">
+              <div class="founder-avatar" aria-hidden="true">🌙</div>
+              <div>
+                <div class="founder-name">Мария Грачева</div>
+                <div class="founder-role">
+                  <span data-lang="ru" class="lang-active">Основатель La Luna Beauty &amp; Care</span>
+                  <span data-lang="kz">La Luna Beauty &amp; Care негізін қалаушы</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-cards">
+
+            <div class="about-card">
+              <div class="about-card__icon" aria-hidden="true">✨</div>
+              <h3 class="about-card__title">
+                <span data-lang="ru" class="lang-active">Сеты в 4–6 рук</span>
+                <span data-lang="kz">4–6 қолмен жасалатын сеттер</span>
+              </h3>
+              <p class="about-card__text">
+                <span data-lang="ru" class="lang-active">Маникюр, педикюр, ресницы и оформление бровей одновременно. Топовое качество за 1.5 часа вместо 4 часов.</span>
+                <span data-lang="kz">Маникюр, педикюр, кірпік және қас бір уақытта. 4 сағаттың орнына 1.5 сағатта керемет сапа.</span>
+              </p>
+            </div>
+
+            <div class="about-card">
+              <div class="about-card__icon" aria-hidden="true">🔮</div>
+              <h3 class="about-card__title">
+                <span data-lang="ru" class="lang-active">Офлайн Таро-сессии &amp; Женские круги</span>
+                <span data-lang="kz">Офлайн Таро сессиялары мен Әйелдер шеңбері</span>
+              </h3>
+              <p class="about-card__text">
+                <span data-lang="ru" class="lang-active">Уникальный формат: глубокий разбор волнующих вопросов за чашкой чая и душевные встречи для внутренней опоры.</span>
+                <span data-lang="kz">Бірегей формат: шай үстінде маңызды сұрақтарды талдау және ішкі үйлесімділікке арналған кездесулер.</span>
+              </p>
+            </div>
+
+            <div class="about-card">
+              <div class="about-card__icon" aria-hidden="true">📍</div>
+              <h3 class="about-card__title">
+                <span data-lang="ru" class="lang-active">Астана, Бухар Жирау 33/1</span>
+                <span data-lang="kz">Астана, Бұқар Жырау 33/1</span>
+              </h3>
+              <p class="about-card__text">
+                <span data-lang="ru" class="lang-active">Удобное расположение, парковка и атмосфера уюта с порога. Работаем ежедневно с 10:00 до 21:00.</span>
+                <span data-lang="kz">Ыңғайлы орналасу, тұрақ және табалдырықтан басталатын жайлы атмосфера. Күн сайын 10:00 - 21:00.</span>
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         УСЛУГИ, АКЦИИ И ПРАЙС-ЛИСТ (SERVICES & PRICES)
+    ============================================================ -->
+    <section id="services" class="services-section">
+      <div class="section-inner">
+
+        <div class="section-head">
+          <span class="hero-eyebrow">
+            <span data-lang="ru" class="lang-active">Прайс и спецпредложения</span>
+            <span data-lang="kz">Бағалар мен ұсыныстар</span>
+          </span>
+          <h2 class="section-title">
+            <span data-lang="ru" class="lang-active">Меню услуг &amp; <em>Акции открытия</em></span>
+            <span data-lang="kz">Қызметтер мәзірі &amp; <em>Ашылу акциялары</em></span>
+          </h2>
+        </div>
+
+        <!-- ТОП АКЦИИ В ЧЕСТЬ ОТКРЫТИЯ -->
+        <div class="promo-grid">
+
+          <div class="promo-card promo-card--dark">
+            <div class="promo-card__blob" aria-hidden="true"></div>
+            <div>
+              <span class="promo-tag">
+                <span data-lang="ru" class="lang-active">В честь открытия</span>
+                <span data-lang="kz">Ашылуға орай</span>
+              </span>
+              <h3 class="promo-title">
+                <span data-lang="ru" class="lang-active">ПОЛНЫЙ ОБРАЗ<br><small>Макияж + Прическа</small></span>
+                <span data-lang="kz">ТОЛЫҚ БЕЙНЕ<br><small>Макияж + Шаш үлгісі</small></span>
+              </h3>
+              <p class="promo-desc">
+                <span data-lang="ru" class="lang-active">Идеальный образ для мероприятия от топ-мастеров студии.</span>
+                <span data-lang="kz">Іс-шараға арналған үздік мастерлерден жасалған мінсіз бейне.</span>
+              </p>
+            </div>
+            <div>
+              <div class="promo-price">
+                <span class="promo-price__now">30 000 ₸</span>
+                <span class="promo-price__old">45 000 ₸</span>
+              </div>
+              <a href="https://wa.me/77054620189?text=%D0%A5%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B0%D1%82%D1%8C%D1%81%D1%8F%20%D0%BD%D0%B0%20%D0%B0%D0%BA%D1%86%D0%B8%D1%8E%20%D0%9F%D0%BE%D0%BB%D0%BD%D1%8B%D0%B9%20%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%2030.000" target="_blank" rel="noopener" class="promo-cta promo-cta--light">
+                <span data-lang="ru" class="lang-active">Забронировать образ</span>
+                <span data-lang="kz">Бейнеге жазылу</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="promo-card promo-card--outline">
+            <div>
+              <span class="promo-tag promo-tag--light">
+                <span data-lang="ru" class="lang-active">Хит продаж</span>
+                <span data-lang="kz">Сату хиты</span>
+              </span>
+              <h3 class="promo-title promo-title--dark">
+                <span data-lang="ru" class="lang-active">MAGIC COMBO<br><small>Лами бровей + Лами ресниц</small></span>
+                <span data-lang="kz">MAGIC COMBO<br><small>Қас ламинирлеу + Кірпік ламинирлеу</small></span>
+              </h3>
+              <p class="promo-desc promo-desc--dark">
+                <span data-lang="ru" class="lang-active">Выразительный открытый взгляд на 1.5–2 месяца без туши и карандаша.</span>
+                <span data-lang="kz">1.5–2 айға созылатын, тушьсіз әрі қарындашсыз ашық көзқарас.</span>
+              </p>
+            </div>
+            <div>
+              <div class="promo-price">
+                <span class="promo-price__now promo-price__now--dark">15 000 ₸</span>
+                <span class="promo-price__old">21 000 ₸</span>
+              </div>
+              <a href="https://wa.me/77054620189?text=%D0%A5%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B0%D1%82%D1%8C%D1%81%D1%8F%20%D0%BD%D0%B0%20Magic%20Combo%2015.000" target="_blank" rel="noopener" class="promo-cta promo-cta--dark">
+                <span data-lang="ru" class="lang-active">Записаться на комбо</span>
+                <span data-lang="kz">Комбоға жазылу</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="promo-card promo-card--gradient">
+            <div>
+              <span class="promo-tag promo-tag--dark">
+                <span data-lang="ru" class="lang-active">VIP экономия времени</span>
+                <span data-lang="kz">VIP уақыт үнемдеу</span>
+              </span>
+              <h3 class="promo-title promo-title--dark">
+                <span data-lang="ru" class="lang-active">УСЛУГИ В 4–6 РУК<br><small>Маникюр + Педикюр + Ресницы</small></span>
+                <span data-lang="kz">4–6 ҚОЛМЕН ҚЫЗМЕТ<br><small>Маникюр + Педикюр + Кірпік</small></span>
+              </h3>
+              <p class="promo-desc promo-desc--dark">
+                <span data-lang="ru" class="lang-active">Выбирайте любые 2-3 процедуры одновременно. Отдыхайте в удобном кресле.</span>
+                <span data-lang="kz">Кез келген 2-3 рәсімді бір мезгілде таңдаңыз. Жайлы креслода демалыңыз.</span>
+              </p>
+            </div>
+            <div>
+              <div class="promo-price">
+                <span class="promo-price__now promo-price__now--dark promo-price__now--sm">всего +3 000 ₸</span>
+                <span class="promo-price__note">
+                  <span data-lang="ru" class="lang-active">к прайсу</span>
+                  <span data-lang="kz">бағаға қосымша</span>
+                </span>
+              </div>
+              <a href="https://wa.me/77054620189?text=%D0%A5%D0%BE%D1%87%D1%83%20%D1%83%D1%81%D0%BB%D1%83%D0%B3%D1%83%20%D0%B2%204-6%20%D1%80%D1%83%D0%BA" target="_blank" rel="noopener" class="promo-cta promo-cta--dark">
+                <span data-lang="ru" class="lang-active">Выбрать сет в 4 руки</span>
+                <span data-lang="kz">4 қол сетін таңдау</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ПОЛНЫЙ ПРАЙС-ЛИСТ -->
+        <div id="price" class="price-block">
+
+          <div class="price-block__head">
+            <h3 class="price-block__title">
+              <span data-lang="ru" class="lang-active">Полный прайс-лист</span>
+              <span data-lang="kz">Толық баға тізімі</span>
+            </h3>
+            <p class="price-block__note">
+              <span data-lang="ru" class="lang-active">Ориентировочные цены. Точную стоимость мастер уточнит с учётом длины, формы и сложности работы.</span>
+              <span data-lang="kz">Бағалар шамамен көрсетілген. Нақты құнын мастер ұзындығына, пішініне және жұмыс күрделілігіне қарай нақтылайды.</span>
+            </p>
+          </div>
+
+          <!-- Вкладки категорий -->
+          <div class="price-tabs" role="tablist" aria-label="Категории услуг">
+            <button class="price-tab active" data-cat="nails" role="tab" aria-selected="true" onclick="setPriceTab('nails')">
+              <span data-lang="ru" class="lang-active">Маникюр и педикюр</span>
+              <span data-lang="kz">Маникюр және педикюр</span>
+            </button>
+            <button class="price-tab" data-cat="lashes" role="tab" aria-selected="false" onclick="setPriceTab('lashes')">
+              <span data-lang="ru" class="lang-active">Ресницы</span>
+              <span data-lang="kz">Кірпік</span>
+            </button>
+            <button class="price-tab" data-cat="brows" role="tab" aria-selected="false" onclick="setPriceTab('brows')">
+              <span data-lang="ru" class="lang-active">Брови</span>
+              <span data-lang="kz">Қас</span>
+            </button>
+            <button class="price-tab" data-cat="epil" role="tab" aria-selected="false" onclick="setPriceTab('epil')">
+              <span data-lang="ru" class="lang-active">Депиляция</span>
+              <span data-lang="kz">Депиляция</span>
+            </button>
+            <button class="price-tab" data-cat="makeup" role="tab" aria-selected="false" onclick="setPriceTab('makeup')">
+              <span data-lang="ru" class="lang-active">Макияж и причёски</span>
+              <span data-lang="kz">Макияж және шаш үлгісі</span>
+            </button>
+            <button class="price-tab" data-cat="tarot" role="tab" aria-selected="false" onclick="setPriceTab('tarot')">
+              <span data-lang="ru" class="lang-active">Таро и встречи</span>
+              <span data-lang="kz">Таро және кездесулер</span>
+            </button>
+          </div>
+
+          <!-- Панель: Маникюр и педикюр -->
+          <div class="price-panel active" data-cat="nails">
+            <ul class="price-list">
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Классический маникюр без покрытия</span><span data-lang="kz">Жабынсыз классикалық маникюр</span></span><span class="price-list__dots"></span><span class="price-list__value">6 000 ₸</span></li>
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Маникюр с покрытием гель-лак</span><span data-lang="kz">Гель-лакпен маникюр</span></span><span class="price-list__dots"></span><span class="price-list__value">9 000 ₸</span></li>
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Классический педикюр</span><span data-lang="kz">Классикалық педикюр</span></span><span class="price-list__dots"></span><span class="price-list__value">9 000 ₸</span></li>
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Педикюр с покрытием гель-лак</span><span data-lang="kz">Гель-лакпен педикюр</span></span><span class="price-list__dots"></span><span class="price-list__value">12 000 ₸</span></li>
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Комплекс маникюр + педикюр</span><span data-lang="kz">Маникюр + педикюр кешені</span></span><span class="price-list__dots"></span><span class="price-list__value">16 000 ₸</span></li>
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Снятие покрытия другого мастера</span><span data-lang="kz">Басқа мастердің жабынын алу</span></span><span class="price-list__dots"></span><span class="price-list__value">2 000 ₸</span></li>
+            </ul>
+          </div>
+
+          <!-- Панель: Ресницы -->
+          <div class="price-panel" data-cat="lashes">
+            <ul class="price-list">
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Классическое наращивание</span><span data-lang="kz">Классикалық ұзарту</span></span><span class="price-list__dots"></span><span class="price-list__value">12 000 ₸</span></li>
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Объём 2D / 3D</span><span data-lang="kz">2D / 3D көлемі</span></span><span class="price-list__dots"></span><span class="price-list__value">15 000 ₸</span></li>
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Голливудский объём</span><span data-lang="kz">Голливуд көлемі</span></span><span class="price-list__dots"></span><span class="price-list__value">18 000 ₸</span></li>
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Ламинирование ресниц</span><span data-lang="kz">Кірпікті ламинирлеу</span></span><span class="price-list__dots"></span><span class="price-list__value">8 000 ₸</span></li>
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Снятие наращённых ресниц</span><span data-lang="kz">Ұзартылған кірпікті алу</span></span><span class="price-list__dots"></span><span class="price-list__value">3 000 ₸</span></li>
+            </ul>
+          </div>
+
+          <!-- Панель: Брови -->
+          <div class="price-panel" data-cat="brows">
+            <ul class="price-list">
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Коррекция + окрашивание</span><span data-lang="kz">Түзету + бояу</span></span><span class="price-list__dots"></span><span class="price-list__value">5 000 ₸</span></li>
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Архитектура бровей</span><span data-lang="kz">Қас архитектурасы</span></span><span class="price-list__dots"></span><span class="price-list__value">6 000 ₸</span></li>
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Ламинирование бровей</span><span data-lang="kz">Қасты ламинирлеу</span></span><span class="price-list__dots"></span><span class="price-list__value">7 000 ₸</span></li>
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Долговременная укладка + ламинирование</span><span data-lang="kz">Ұзақ мерзімді сәндеу + ламинирлеу</span></span><span class="price-list__dots"></span><span class="price-list__value">9 000 ₸</span></li>
+            </ul>
+          </div>
+
+          <!-- Панель: Депиляция -->
+          <div class="price-panel" data-cat="epil">
+            <ul class="price-list">
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Воском — голени</span><span data-lang="kz">Балауызбен — балтыр</span></span><span class="price-list__dots"></span><span class="price-list__value">6 000 ₸</span></li>
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Воском — руки полностью</span><span data-lang="kz">Балауызбен — қол толығымен</span></span><span class="price-list__dots"></span><span class="price-list__value">5 000 ₸</span></li>
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Глубокое бикини</span><span data-lang="kz">Терең бикини</span></span><span class="price-list__dots"></span><span class="price-list__value">8 000 ₸</span></li>
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Подмышки</span><span data-lang="kz">Қолтық</span></span><span class="price-list__dots"></span><span class="price-list__value">3 000 ₸</span></li>
+            </ul>
+          </div>
+
+          <!-- Панель: Макияж и причёски -->
+          <div class="price-panel" data-cat="makeup">
+            <ul class="price-list">
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Дневной макияж</span><span data-lang="kz">Күндізгі макияж</span></span><span class="price-list__dots"></span><span class="price-list__value">10 000 ₸</span></li>
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Вечерний макияж</span><span data-lang="kz">Кешкі макияж</span></span><span class="price-list__dots"></span><span class="price-list__value">15 000 ₸</span></li>
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Укладка / причёска</span><span data-lang="kz">Шаш үлгісі</span></span><span class="price-list__dots"></span><span class="price-list__value">12 000 ₸</span></li>
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Полный образ (макияж + причёска)</span><span data-lang="kz">Толық бейне (макияж + шаш үлгісі)</span></span><span class="price-list__dots"></span><span class="price-list__value">45 000 ₸</span></li>
+            </ul>
+          </div>
+
+          <!-- Панель: Таро и встречи -->
+          <div class="price-panel" data-cat="tarot">
+            <ul class="price-list">
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Таро-сессия (60 минут)</span><span data-lang="kz">Таро сессиясы (60 минут)</span></span><span class="price-list__dots"></span><span class="price-list__value">15 000 ₸</span></li>
+              <li><span class="price-list__name"><span data-lang="ru" class="lang-active">Женский круг — участие</span><span data-lang="kz">Әйелдер шеңбері — қатысу</span></span><span class="price-list__dots"></span><span class="price-list__value">8 000 ₸</span></li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ДО / ПОСЛЕ + КАРУСЕЛЬ РАБОТ МАСТЕРОВ (TRANSFORMATIONS & PORTFOLIO)
+    ============================================================ -->
+    <section id="transformations" class="transformations-section">
+      <div class="section-inner">
+
+        <div class="section-head reveal">
+          <span class="hero-eyebrow">
+            <span data-lang="ru" class="lang-active">Реальные результаты</span>
+            <span data-lang="kz">Нақты нәтижелер</span>
+          </span>
+          <h2 class="section-title">
+            <span data-lang="ru" class="lang-active">Из тени <em>к свету</em></span>
+            <span data-lang="kz">Көлеңкеден <em>жарыққа</em></span>
+          </h2>
+          <p class="section-subnote">
+            <span data-lang="ru" class="lang-active">Потяните за лунную ручку — и посмотрите на разницу. Так меняются наши гостьи после визита в La Luna.</span>
+            <span data-lang="kz">Ай тұтқасын тартыңыз — айырмашылықты көріңіз. Гостьаларымыз La Luna-ға келгеннен кейін дәл осылай өзгереді.</span>
+          </p>
+        </div>
+
+        <!-- ==================== ДО/ПОСЛЕ СЛАЙДЕР ==================== -->
+        <div class="ba-feature reveal">
+          <div class="ba-viewport" id="ba-viewport">
+
+            <!-- Слайд 1: Ресницы -->
+            <div class="ba-slide active" data-ba="0">
+              <!-- 📸 ЗАМЕНИТЕ ПЛЕЙСХОЛДЕР: вместо .ba-photo--after вставьте <img class="ba-img" src="posle-resnicy.jpg" alt="После наращивания ресниц"> -->
+              <div class="ba-photo ba-photo--after ba-photo--lashes">
+                <span class="ba-icon" aria-hidden="true">👁️</span>
+              </div>
+              <!-- 📸 ЗАМЕНИТЕ ПЛЕЙСХОЛДЕР: вместо .ba-photo--before вставьте <img class="ba-img" src="do-resnicy.jpg" alt="До наращивания ресниц"> -->
+              <div class="ba-photo ba-photo--before ba-photo--lashes">
+                <span class="ba-icon" aria-hidden="true">👁️</span>
+              </div>
+              <div class="ba-tag">
+                <span data-lang="ru" class="lang-active">Наращивание ресниц · 2D объём</span>
+                <span data-lang="kz">Кірпік ұзарту · 2D көлем</span>
+              </div>
+            </div>
+
+            <!-- Слайд 2: Брови -->
+            <div class="ba-slide" data-ba="1">
+              <!-- 📸 ЗАМЕНИТЕ: <img class="ba-img" src="posle-brovi.jpg" alt="После оформления бровей"> -->
+              <div class="ba-photo ba-photo--after ba-photo--brows">
+                <span class="ba-icon" aria-hidden="true">🪞</span>
+              </div>
+              <!-- 📸 ЗАМЕНИТЕ: <img class="ba-img" src="do-brovi.jpg" alt="До оформления бровей"> -->
+              <div class="ba-photo ba-photo--before ba-photo--brows">
+                <span class="ba-icon" aria-hidden="true">🪞</span>
+              </div>
+              <div class="ba-tag">
+                <span data-lang="ru" class="lang-active">Архитектура + ламинирование бровей</span>
+                <span data-lang="kz">Қас архитектурасы + ламинирлеу</span>
+              </div>
+            </div>
+
+            <!-- Слайд 3: Маникюр -->
+            <div class="ba-slide" data-ba="2">
+              <!-- 📸 ЗАМЕНИТЕ: <img class="ba-img" src="posle-manikur.jpg" alt="После маникюра"> -->
+              <div class="ba-photo ba-photo--after ba-photo--nails">
+                <span class="ba-icon" aria-hidden="true">💅</span>
+              </div>
+              <!-- 📸 ЗАМЕНИТЕ: <img class="ba-img" src="do-manikur.jpg" alt="До маникюра"> -->
+              <div class="ba-photo ba-photo--before ba-photo--nails">
+                <span class="ba-icon" aria-hidden="true">💅</span>
+              </div>
+              <div class="ba-tag">
+                <span data-lang="ru" class="lang-active">Маникюр + гель-лак покрытие</span>
+                <span data-lang="kz">Маникюр + гель-лак жабыны</span>
+              </div>
+            </div>
+
+            <!-- Слайд 4: Причёска -->
+            <div class="ba-slide" data-ba="3">
+              <!-- 📸 ЗАМЕНИТЕ: <img class="ba-img" src="posle-pricheska.jpg" alt="После укладки"> -->
+              <div class="ba-photo ba-photo--after ba-photo--hair">
+                <span class="ba-icon" aria-hidden="true">💇‍♀️</span>
+              </div>
+              <!-- 📸 ЗАМЕНИТЕ: <img class="ba-img" src="do-pricheska.jpg" alt="До укладки"> -->
+              <div class="ba-photo ba-photo--before ba-photo--hair">
+                <span class="ba-icon" aria-hidden="true">💇‍♀️</span>
+              </div>
+              <div class="ba-tag">
+                <span data-lang="ru" class="lang-active">Вечерняя укладка + макияж</span>
+                <span data-lang="kz">Кешкі сәндеу + макияж</span>
+              </div>
+            </div>
+
+            <!-- Фиксированные подписи -->
+            <span class="ba-label ba-label--before" aria-hidden="true">
+              <span data-lang="ru" class="lang-active">🌑 До</span>
+              <span data-lang="kz">🌑 Дейін</span>
+            </span>
+            <span class="ba-label ba-label--after" aria-hidden="true">
+              <span data-lang="ru" class="lang-active">После 🌕</span>
+              <span data-lang="kz">Кейін 🌕</span>
+            </span>
+
+            <!-- Лунная ручка-разделитель -->
+            <div class="ba-handle" id="ba-handle" role="slider" tabindex="0"
+                 aria-label="Перетащите, чтобы сравнить до и после"
+                 aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+              <div class="ba-handle__line ba-handle__line--top"></div>
+              <div class="ba-handle__moon">
+                <div class="ba-handle__moon-shadow"></div>
+              </div>
+              <div class="ba-handle__line ba-handle__line--bottom"></div>
+            </div>
+
+          </div>
+
+          <!-- Мини-вкладки для переключения пар до/после -->
+          <div class="ba-thumbs" role="tablist" aria-label="Выбор примера">
+            <button class="ba-thumb active" data-goto="0" role="tab" aria-selected="true">
+              <span aria-hidden="true">👁️</span>
+              <span data-lang="ru" class="lang-active">Ресницы</span>
+              <span data-lang="kz">Кірпік</span>
+            </button>
+            <button class="ba-thumb" data-goto="1" role="tab" aria-selected="false">
+              <span aria-hidden="true">🪞</span>
+              <span data-lang="ru" class="lang-active">Брови</span>
+              <span data-lang="kz">Қас</span>
+            </button>
+            <button class="ba-thumb" data-goto="2" role="tab" aria-selected="false">
+              <span aria-hidden="true">💅</span>
+              <span data-lang="ru" class="lang-active">Маникюр</span>
+              <span data-lang="kz">Маникюр</span>
+            </button>
+            <button class="ba-thumb" data-goto="3" role="tab" aria-selected="false">
+              <span aria-hidden="true">💇‍♀️</span>
+              <span data-lang="ru" class="lang-active">Причёска</span>
+              <span data-lang="kz">Шаш үлгісі</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ==================== КАРУСЕЛЬ РАБОТ МАСТЕРОВ ==================== -->
+        <div class="portfolio-block reveal">
+
+          <div class="portfolio-head">
+            <h3 class="portfolio-title">
+              <span data-lang="ru" class="lang-active">Портфолио наших мастеров</span>
+              <span data-lang="kz">Мастерлерімізідің портфолиосы</span>
+            </h3>
+
+            <div class="portfolio-chips" role="tablist" aria-label="Фильтр по категориям">
+              <button class="portfolio-chip active" data-filter="all" onclick="setPortfolioFilter('all', this)">
+                <span data-lang="ru" class="lang-active">Все работы</span>
+                <span data-lang="kz">Барлығы</span>
+              </button>
+              <button class="portfolio-chip" data-filter="nails" onclick="setPortfolioFilter('nails', this)">
+                <span data-lang="ru" class="lang-active">Ногти</span>
+                <span data-lang="kz">Тырнақ</span>
+              </button>
+              <button class="portfolio-chip" data-filter="lashes" onclick="setPortfolioFilter('lashes', this)">
+                <span data-lang="ru" class="lang-active">Ресницы</span>
+                <span data-lang="kz">Кірпік</span>
+              </button>
+              <button class="portfolio-chip" data-filter="brows" onclick="setPortfolioFilter('brows', this)">
+                <span data-lang="ru" class="lang-active">Брови</span>
+                <span data-lang="kz">Қас</span>
+              </button>
+              <button class="portfolio-chip" data-filter="makeup" onclick="setPortfolioFilter('makeup', this)">
+                <span data-lang="ru" class="lang-active">Макияж</span>
+                <span data-lang="kz">Макияж</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="portfolio-carousel">
+            <button class="portfolio-arrow portfolio-arrow--prev" id="portfolio-prev" aria-label="Предыдущие работы">‹</button>
+
+            <div class="portfolio-track" id="portfolio-track">
+
+              <!-- Карточка 1 -->
+              <div class="portfolio-card" data-cat="nails">
+                <!-- 📸 ЗАМЕНИТЕ: <img class="portfolio-img" src="rabota-karlygash-1.jpg" alt="Педикюр, мастер Карлыгаш"> -->
+                <div class="portfolio-photo portfolio-photo--nails"><span class="portfolio-icon">💅</span></div>
+                <div class="portfolio-overlay">
+                  <div class="portfolio-info">
+                    <div class="portfolio-master">Карлыгаш</div>
+                    <div class="portfolio-service">
+                      <span data-lang="ru" class="lang-active">SPA-педикюр</span>
+                      <span data-lang="kz">SPA-педикюр</span>
+                    </div>
+                  </div>
+                  <a href="https://wa.me/77054620189?text=%D0%A5%D0%BE%D1%87%D1%83%20%D1%82%D0%B0%D0%BA%D0%BE%D0%B9%20%D0%B6%D0%B5%20%D1%80%D0%B5%D0%B7%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%82%2C%20%D0%BA%D0%B0%D0%BA%20%D1%83%20%D0%9A%D0%B0%D1%80%D0%BB%D1%8B%D0%B3%D0%B0%D1%88" target="_blank" rel="noopener" class="portfolio-cta">
+                    <span data-lang="ru" class="lang-active">Записаться на такой же результат →</span>
+                    <span data-lang="kz">Осындай нәтижеге жазылу →</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Карточка 2 -->
+              <div class="portfolio-card" data-cat="lashes">
+                <!-- 📸 ЗАМЕНИТЕ: <img class="portfolio-img" src="rabota-dana-1.jpg" alt="Наращивание ресниц, мастер Дана"> -->
+                <div class="portfolio-photo portfolio-photo--lashes"><span class="portfolio-icon">👁️</span></div>
+                <div class="portfolio-overlay">
+                  <div class="portfolio-info">
+                    <div class="portfolio-master">Дана</div>
+                    <div class="portfolio-service">
+                      <span data-lang="ru" class="lang-active">Голливудский объём</span>
+                      <span data-lang="kz">Голливуд көлемі</span>
+                    </div>
+                  </div>
+                  <a href="https://wa.me/77054620189?text=%D0%A5%D0%BE%D1%87%D1%83%20%D1%82%D0%B0%D0%BA%D0%BE%D0%B9%20%D0%B6%D0%B5%20%D1%80%D0%B5%D0%B7%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%82%2C%20%D0%BA%D0%B0%D0%BA%20%D1%83%20%D0%94%D0%B0%D0%BD%D1%8B" target="_blank" rel="noopener" class="portfolio-cta">
+                    <span data-lang="ru" class="lang-active">Записаться на такой же результат →</span>
+                    <span data-lang="kz">Осындай нәтижеге жазылу →</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Карточка 3 -->
+              <div class="portfolio-card" data-cat="brows">
+                <!-- 📸 ЗАМЕНИТЕ: <img class="portfolio-img" src="rabota-aliya-1.jpg" alt="Ламинирование бровей, мастер Алия"> -->
+                <div class="portfolio-photo portfolio-photo--brows"><span class="portfolio-icon">🪞</span></div>
+                <div class="portfolio-overlay">
+                  <div class="portfolio-info">
+                    <div class="portfolio-master">Алия</div>
+                    <div class="portfolio-service">
+                      <span data-lang="ru" class="lang-active">Ламинирование бровей</span>
+                      <span data-lang="kz">Қасты ламинирлеу</span>
+                    </div>
+                  </div>
+                  <a href="https://wa.me/77054620189?text=%D0%A5%D0%BE%D1%87%D1%83%20%D1%82%D0%B0%D0%BA%D0%BE%D0%B9%20%D0%B6%D0%B5%20%D1%80%D0%B5%D0%B7%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%82%2C%20%D0%BA%D0%B0%D0%BA%20%D1%83%20%D0%90%D0%BB%D0%B8%D0%B8" target="_blank" rel="noopener" class="portfolio-cta">
+                    <span data-lang="ru" class="lang-active">Записаться на такой же результат →</span>
+                    <span data-lang="kz">Осындай нәтижеге жазылу →</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Карточка 4 -->
+              <div class="portfolio-card" data-cat="makeup">
+                <!-- 📸 ЗАМЕНИТЕ: <img class="portfolio-img" src="rabota-zhanna-1.jpg" alt="Вечерний макияж, мастер Жанна"> -->
+                <div class="portfolio-photo portfolio-photo--makeup"><span class="portfolio-icon">💄</span></div>
+                <div class="portfolio-overlay">
+                  <div class="portfolio-info">
+                    <div class="portfolio-master">Жанна</div>
+                    <div class="portfolio-service">
+                      <span data-lang="ru" class="lang-active">Вечерний макияж</span>
+                      <span data-lang="kz">Кешкі макияж</span>
+                    </div>
+                  </div>
+                  <a href="https://wa.me/77054620189?text=%D0%A5%D0%BE%D1%87%D1%83%20%D1%82%D0%B0%D0%BA%D0%BE%D0%B9%20%D0%B6%D0%B5%20%D1%80%D0%B5%D0%B7%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%82%2C%20%D0%BA%D0%B0%D0%BA%20%D1%83%20%D0%96%D0%B0%D0%BD%D0%BD%D1%8B" target="_blank" rel="noopener" class="portfolio-cta">
+                    <span data-lang="ru" class="lang-active">Записаться на такой же результат →</span>
+                    <span data-lang="kz">Осындай нәтижеге жазылу →</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Карточка 5 -->
+              <div class="portfolio-card" data-cat="nails">
+                <!-- 📸 ЗАМЕНИТЕ: <img class="portfolio-img" src="rabota-mariya-1.jpg" alt="Дизайн ногтей, мастер Мария"> -->
+                <div class="portfolio-photo portfolio-photo--nails-2"><span class="portfolio-icon">💅</span></div>
+                <div class="portfolio-overlay">
+                  <div class="portfolio-info">
+                    <div class="portfolio-master">Мария</div>
+                    <div class="portfolio-service">
+                      <span data-lang="ru" class="lang-active">Гель-лак дизайн</span>
+                      <span data-lang="kz">Гель-лак дизайны</span>
+                    </div>
+                  </div>
+                  <a href="https://wa.me/77054620189?text=%D0%A5%D0%BE%D1%87%D1%83%20%D1%82%D0%B0%D0%BA%D0%BE%D0%B9%20%D0%B6%D0%B5%20%D1%80%D0%B5%D0%B7%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%82%2C%20%D0%BA%D0%B0%D0%BA%20%D1%83%20%D0%9C%D0%B0%D1%80%D0%B8%D0%B8" target="_blank" rel="noopener" class="portfolio-cta">
+                    <span data-lang="ru" class="lang-active">Записаться на такой же результат →</span>
+                    <span data-lang="kz">Осындай нәтижеге жазылу →</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Карточка 6 -->
+              <div class="portfolio-card" data-cat="lashes">
+                <!-- 📸 ЗАМЕНИТЕ: <img class="portfolio-img" src="rabota-dana-2.jpg" alt="Ламинирование ресниц, мастер Дана"> -->
+                <div class="portfolio-photo portfolio-photo--lashes-2"><span class="portfolio-icon">👁️</span></div>
+                <div class="portfolio-overlay">
+                  <div class="portfolio-info">
+                    <div class="portfolio-master">Дана</div>
+                    <div class="portfolio-service">
+                      <span data-lang="ru" class="lang-active">Ламинирование ресниц</span>
+                      <span data-lang="kz">Кірпікті ламинирлеу</span>
+                    </div>
+                  </div>
+                  <a href="https://wa.me/77054620189?text=%D0%A5%D0%BE%D1%87%D1%83%20%D1%82%D0%B0%D0%BA%D0%BE%D0%B9%20%D0%B6%D0%B5%20%D1%80%D0%B5%D0%B7%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%82%2C%20%D0%BA%D0%B0%D0%BA%20%D1%83%20%D0%94%D0%B0%D0%BD%D1%8B" target="_blank" rel="noopener" class="portfolio-cta">
+                    <span data-lang="ru" class="lang-active">Записаться на такой же результат →</span>
+                    <span data-lang="kz">Осындай нәтижеге жазылу →</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Карточка 7 -->
+              <div class="portfolio-card" data-cat="brows">
+                <!-- 📸 ЗАМЕНИТЕ: <img class="portfolio-img" src="rabota-mariya-2.jpg" alt="Архитектура бровей, мастер Мария"> -->
+                <div class="portfolio-photo portfolio-photo--brows-2"><span class="portfolio-icon">🪞</span></div>
+                <div class="portfolio-overlay">
+                  <div class="portfolio-info">
+                    <div class="portfolio-master">Мария</div>
+                    <div class="portfolio-service">
+                      <span data-lang="ru" class="lang-active">Архитектура бровей</span>
+                      <span data-lang="kz">Қас архитектурасы</span>
+                    </div>
+                  </div>
+                  <a href="https://wa.me/77054620189?text=%D0%A5%D0%BE%D1%87%D1%83%20%D1%82%D0%B0%D0%BA%D0%BE%D0%B9%20%D0%B6%D0%B5%20%D1%80%D0%B5%D0%B7%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%82%2C%20%D0%BA%D0%B0%D0%BA%20%D1%83%20%D0%9C%D0%B0%D1%80%D0%B8%D0%B8" target="_blank" rel="noopener" class="portfolio-cta">
+                    <span data-lang="ru" class="lang-active">Записаться на такой же результат →</span>
+                    <span data-lang="kz">Осындай нәтижеге жазылу →</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Карточка 8 -->
+              <div class="portfolio-card" data-cat="makeup">
+                <!-- 📸 ЗАМЕНИТЕ: <img class="portfolio-img" src="rabota-zhanna-2.jpg" alt="Дневной макияж, мастер Жанна"> -->
+                <div class="portfolio-photo portfolio-photo--makeup-2"><span class="portfolio-icon">💄</span></div>
+                <div class="portfolio-overlay">
+                  <div class="portfolio-info">
+                    <div class="portfolio-master">Жанна</div>
+                    <div class="portfolio-service">
+                      <span data-lang="ru" class="lang-active">Дневной макияж</span>
+                      <span data-lang="kz">Күндізгі макияж</span>
+                    </div>
+                  </div>
+                  <a href="https://wa.me/77054620189?text=%D0%A5%D0%BE%D1%87%D1%83%20%D1%82%D0%B0%D0%BA%D0%BE%D0%B9%20%D0%B6%D0%B5%20%D1%80%D0%B5%D0%B7%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%82%2C%20%D0%BA%D0%B0%D0%BA%20%D1%83%20%D0%96%D0%B0%D0%BD%D0%BD%D1%8B" target="_blank" rel="noopener" class="portfolio-cta">
+                    <span data-lang="ru" class="lang-active">Записаться на такой же результат →</span>
+                    <span data-lang="kz">Осындай нәтижеге жазылу →</span>
+                  </a>
+                </div>
+              </div>
+
+            </div>
+
+            <button class="portfolio-arrow portfolio-arrow--next" id="portfolio-next" aria-label="Следующие работы">›</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ОТЗЫВЫ И РЕАЛЬНЫЕ ИСТОРИИ ИЗ 2ГИС (REVIEWS)
+    ============================================================ -->
+    <section id="reviews" class="reviews-section">
+      <div class="section-inner">
+        <div class="section-head">
+
+          <span class="hero-eyebrow">
+            <span data-lang="ru" class="lang-active">Рейтинг 5.0 в 2ГИС Астана</span>
+            <span data-lang="kz">2ГИС Астанадағы 5.0 рейтингі</span>
+          </span>
+          <h2 class="section-title">
+            <span data-lang="ru" class="lang-active">Истории наших <em>любимых гостей</em></span>
+            <span data-lang="kz">Біздің <em>сүйікті қонақтардың</em> пікірлері</span>
+          </h2>
+          <p class="section-subnote">
+            <span data-lang="ru" class="lang-active">Реальные отзывы гостей из официального профиля 2ГИС по адресу Бухар Жирау 33/1</span>
+            <span data-lang="kz">Бұқар Жырау 33/1 мекенжайы бойынша 2ГИС ресми профилінен алынған нақты пікірлер</span>
+          </p>
+        </div>
+
+        <div class="reviews-grid">
+
+          <div class="review-card">
+            <div class="review-stars" aria-hidden="true">★★★★★</div>
+            <p class="review-text">
+              <span data-lang="ru" class="lang-active">«Пришла сюда после крайне неудачного маникюра в другом салоне, в расстроенном состоянии. По рекомендации подруги меня приняла сама хозяйка Мария. Она оказалась невероятно добрым и чутким человеком. Маникюр получился аккуратный, красивый, и самое главное, сделан с душой. Атмосфера очень уютная, чувствуешь заботу с первых минут 🤍»</span>
+              <span data-lang="kz">«Басқа салондағы сәтсіз маникюрден кейін көңіл-күйім түсіп келдім. Танысымның кеңесі бойынша мені шаруашылық иесі Мария қабылдады. Ол өте мейірімді әрі жанашыр адам болып шықты. Маникюр ұқыпты, әдемі, ең бастысы жүрекпен жасалды. Атмосферасы өте жайлы, бастапқы минуттан күтім сезіледі 🤍»</span>
+            </p>
+            <div class="review-author">
+              <span data-lang="ru" class="lang-active">Гость салона (из 2ГИС)</span>
+              <span data-lang="kz">Салон қонағы (2ГИС-тен)</span>
+            </div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-stars" aria-hidden="true">★★★★★</div>
+            <p class="review-text">
+              <span data-lang="ru" class="lang-active">«В салон попала случайно, находится рядом с новым домом. Была на процедуре педикюра с ребенком на руках. Мастера очень лояльные 😍 Огромная благодарность Марие и Карлыгаш за шикарную организацию и комфорт во всем! В конце процедуры мне даже надели одноразовые носочки, все продумано до мелочей!»</span>
+              <span data-lang="kz">«Салонға кездейсоқ тап болдым, жаңа үйіме жақын екен. Педикюр рәсіміне баламды алып бардым. Мастерлер өте түсінікті 😍 Мария мен Қарлығашқа керемет ұйымдастыру мен жайлылық үшін зор алғыс! Рәсімнің соңында бір реттік шұлық та кигізді, бәрі ұсақ-түйегіне дейін ойластырылған!»</span>
+            </p>
+            <div class="review-author">
+              <span data-lang="ru" class="lang-active">Гость салона (из 2ГИС)</span>
+              <span data-lang="kz">Салон қонағы (2ГИС-тен)</span>
+            </div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-stars" aria-hidden="true">★★★★★</div>
+            <p class="review-text">
+              <span data-lang="ru" class="lang-active">«Уже давно доверяю свою красоту только La Luna! Делала здесь ламинирование бровей и ресниц, маникюр — всё всегда на высшем уровне. Мастера настоящие профессионалы. Сегодня впервые попробовала наращивание ресниц и осталась в полном восторге! Спасибо команде за тёплый приём ✨»</span>
+              <span data-lang="kz">«Сұлулығымды тек La Luna-ға сеніп тапсырамын! Мұнда қас пен кірпікті ламинирлеу, маникюр жасаттым — бәрі әрдайым жоғары деңгейде. Мастерлер нағыз кәсіпқойлар. Бүгін алғаш рет кірпік ұзартуды байқап көрдім және шексіз риза болдым! Жылы қабылдағаны үшін команданың алғыс!»</span>
+            </p>
+            <div class="review-author">
+              <span data-lang="ru" class="lang-active">Постоянная гостья (из 2ГИС)</span>
+              <span data-lang="kz">Тұрақты қонақ (2ГИС-тен)</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="reviews-cta">
+          <a href="https://2gis.kz/astana/search/la%20luna%20astana/firm/70000001110245299/71.447614%2C51.097935?m=71.447587%2C51.097952%2F17" target="_blank" rel="noopener" class="btn-primary btn-primary--static">
+            <span data-lang="ru" class="lang-active">Смотреть все отзывы и карту в 2ГИС</span>
+            <span data-lang="kz">2ГИС-те барлық пікірлер мен картаны қарау</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         КОНТАКТЫ, КАРТА И ФОРМА ЗАПИСИ (CONTACTS)
+    ============================================================ -->
+    <section id="contacts" class="contacts-section">
+      <div class="section-inner">
+        <div class="section-head">
+          <span class="hero-eyebrow">
+            <span data-lang="ru" class="lang-active">Мы ждём вас</span>
+            <span data-lang="kz">Сізді күтеміз</span>
+          </span>
+          <h2 class="section-title">
+            <span data-lang="ru" class="lang-active">Приходите или <em>запишитесь онлайн</em></span>
+            <span data-lang="kz">Келіңіз немесе <em>онлайн жазылыңыз</em></span>
+          </h2>
+        </div>
+
+        <div class="contacts-grid">
+
+          <!-- Информация + карта -->
+          <div class="contacts-info">
+
+            <div class="contact-row">
+              <div class="contact-row__icon" aria-hidden="true">📍</div>
+              <div>
+                <div class="contact-row__label">
+                  <span data-lang="ru" class="lang-active">Адрес</span>
+                  <span data-lang="kz">Мекенжай</span>
+                </div>
+                <div class="contact-row__value">
+                  <span data-lang="ru" class="lang-active">Астана, ул. Бухар Жирау 33/1</span>
+                  <span data-lang="kz">Астана, Бұқар Жырау көш. 33/1</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-row">
+              <div class="contact-row__icon" aria-hidden="true">🕒</div>
+              <div>
+                <div class="contact-row__label">
+                  <span data-lang="ru" class="lang-active">Часы работы</span>
+                  <span data-lang="kz">Жұмыс уақыты</span>
+                </div>
+                <div class="contact-row__value">
+                  <span data-lang="ru" class="lang-active">Ежедневно, 10:00 – 21:00</span>
+                  <span data-lang="kz">Күн сайын, 10:00 – 21:00</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-row">
+              <div class="contact-row__icon" aria-hidden="true">💬</div>
+              <div>
+                <div class="contact-row__label">WhatsApp</div>
+                <div class="contact-row__value">
+                  <a href="https://wa.me/77054620189" target="_blank" rel="noopener">+7 705 462 01 89</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-row">
+              <div class="contact-row__icon" aria-hidden="true">🗺️</div>
+              <div>
+                <div class="contact-row__label">2ГИС</div>
+                <div class="contact-row__value">
+                  <a href="https://2gis.kz/astana/search/la%20luna%20astana/firm/70000001110245299/71.447614%2C51.097935?m=71.447587%2C51.097952%2F17" target="_blank" rel="noopener">
+                    <span data-lang="ru" class="lang-active">Открыть карту и маршрут</span>
+                    <span data-lang="kz">Картаны және бағытты ашу</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="contacts-map">
+              <iframe
+                src="https://widgets.2gis.com/widget?type=firmsonmap&options=%7B%22pos%22%3A%7B%22lat%22%3A51.097935%2C%22lon%22%3A71.447614%2C%22zoom%22%3A16%7D%2C%22opt%22%3A%7B%22city%22%3A%22astana%22%7D%2C%22org%22%3A%7B%22id%22%3A%2270000001110245299%22%7D%7D"
+                width="100%" height="100%" frameborder="0" loading="lazy"
+                title="La Luna на карте 2ГИС"></iframe>
+            </div>
+
+          </div>
+
+          <!-- Форма записи -->
+          <div class="booking-card">
+            <h3 class="booking-title">
+              <span data-lang="ru" class="lang-active">Быстрая запись</span>
+              <span data-lang="kz">Жедел жазылу</span>
+            </h3>
+            <p class="booking-subtitle">
+              <span data-lang="ru" class="lang-active">Заполните форму — мы откроем WhatsApp с готовым сообщением, останется его отправить.</span>
+              <span data-lang="kz">Форманы толтырыңыз — дайын хабарламамен WhatsApp ашылады, оны жіберу ғана қалады.</span>
+            </p>
+
+            <form id="booking-form" class="booking-form" onsubmit="return submitBooking(event)">
+              <label class="booking-field">
+                <span data-lang="ru" class="lang-active">Ваше имя</span>
+                <span data-lang="kz">Атыңыз</span>
+                <input type="text" id="bf-name" name="name" required placeholder="Айгерим" autocomplete="name" />
+              </label>
+
+              <label class="booking-field">
+                <span data-lang="ru" class="lang-active">Телефон</span>
+                <span data-lang="kz">Телефон</span>
+                <input type="tel" id="bf-phone" name="phone" required placeholder="+7 7__ ___ __ __" autocomplete="tel" />
+              </label>
+
+              <label class="booking-field">
+                <span data-lang="ru" class="lang-active">Услуга</span>
+                <span data-lang="kz">Қызмет</span>
+                <select id="bf-service" name="service">
+                  <option value="Маникюр / педикюр">Маникюр / педикюр</option>
+                  <option value="Ресницы">Ресницы</option>
+                  <option value="Брови">Брови</option>
+                  <option value="Депиляция">Депиляция</option>
+                  <option value="Макияж / причёска">Макияж / причёска</option>
+                  <option value="Сет в 4-6 рук">Сет в 4-6 рук</option>
+                  <option value="Таро-сессия / Женский круг">Таро-сессия / Женский круг</option>
+                  <option value="Не знаю, подскажите">Не знаю, подскажите</option>
+                </select>
+              </label>
+
+              <label class="booking-field">
+                <span data-lang="ru" class="lang-active">Удобное время (необязательно)</span>
+                <span data-lang="kz">Ыңғайлы уақыт (міндетті емес)</span>
+                <input type="text" id="bf-time" name="time" placeholder="Напр. завтра после 18:00" />
+              </label>
+
+              <button type="submit" class="btn-primary btn-primary--static booking-submit">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                <span data-lang="ru" class="lang-active">Отправить в WhatsApp</span>
+                <span data-lang="kz">WhatsApp-қа жіберу</span>
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================================================
+       ФУТЕР
+  ============================================================ -->
+  <footer class="footer">
+    <div class="footer-inner">
+
+      <div class="footer-brand">
+        <div class="logo__wordmark footer-logo">
+          <span class="logo__la">La</span><span class="logo__space"></span><span class="logo__luna">Luna</span>
+        </div>
+        <p class="footer-tagline">
+          <span data-lang="ru" class="lang-active">Новое пространство красоты в Астане</span>
+          <span data-lang="kz">Астанадағы жаңа сұлулық кеңістігі</span>
+        </p>
+        <a href="https://wa.me/77054620189" target="_blank" rel="noopener" class="footer-wa">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          <span>+7 705 462 01 89</span>
+        </a>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-col__title">
+          <span data-lang="ru" class="lang-active">Навигация</span>
+          <span data-lang="kz">Навигация</span>
+        </div>
+        <a href="#about"><span data-lang="ru" class="lang-active">О нас</span><span data-lang="kz">Біз туралы</span></a>
+        <a href="#services"><span data-lang="ru" class="lang-active">Услуги</span><span data-lang="kz">Қызметтер</span></a>
+        <a href="#price"><span data-lang="ru" class="lang-active">Прайс</span><span data-lang="kz">Бағалар</span></a>
+        <a href="#transformations"><span data-lang="ru" class="lang-active">Портфолио</span><span data-lang="kz">Портфолио</span></a>
+        <a href="#reviews"><span data-lang="ru" class="lang-active">Отзывы</span><span data-lang="kz">Пікірлер</span></a>
+        <a href="#contacts"><span data-lang="ru" class="lang-active">Контакты</span><span data-lang="kz">Байланыс</span></a>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-col__title">
+          <span data-lang="ru" class="lang-active">Контакты</span>
+          <span data-lang="kz">Байланыс</span>
+        </div>
+        <span class="footer-static-text">
+          <span data-lang="ru" class="lang-active">Астана, Бухар Жирау 33/1</span>
+          <span data-lang="kz">Астана, Бұқар Жырау 33/1</span>
+        </span>
+        <span class="footer-static-text">
+          <span data-lang="ru" class="lang-active">Ежедневно 10:00–21:00</span>
+          <span data-lang="kz">Күн сайын 10:00–21:00</span>
+        </span>
+        <a href="https://2gis.kz/astana/search/la%20luna%20astana/firm/70000001110245299/71.447614%2C51.097935?m=71.447587%2C51.097952%2F17" target="_blank" rel="noopener">2ГИС</a>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span data-lang="ru" class="lang-active">© 2026 La Luna Beauty &amp; Care. Все права защищены.</span>
+      <span data-lang="kz">© 2026 La Luna Beauty &amp; Care. Барлық құқықтар қорғалған.</span>
+    </div>
+  </footer>
+
+
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+    /* ---- Переключение языка ---- */
+    let currentLang = 'ru';
+
+    function setLang(lang) {
+      if (lang === currentLang) return;
+      currentLang = lang;
+
+      // Показываем/скрываем элементы с data-lang
+      document.querySelectorAll('[data-lang]').forEach(el => {
+        if (el.dataset.lang === lang) {
+          el.classList.add('lang-active');
+        } else {
+          el.classList.remove('lang-active');
+        }
+      });
+
+      // Обновляем кнопки переключателя
+      document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
+      document.getElementById('btn-kz').classList.toggle('active', lang === 'kz');
+      document.getElementById('btn-ru').setAttribute('aria-pressed', lang === 'ru');
+      document.getElementById('btn-kz').setAttribute('aria-pressed', lang === 'kz');
+
+      // Атрибут lang на <html>
+      document.documentElement.lang = lang === 'kz' ? 'kk' : 'ru';
+    }
+
+    /* ---- Тень шапки при скролле ---- */
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 10);
+    }, { passive: true });
+
+    /* ---- Бургер-меню ---- */
+    const burger = document.getElementById('burger');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    burger.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      burger.classList.toggle('open', isOpen);
+      burger.setAttribute('aria-expanded', isOpen);
+    });
+
+    // Закрываем мобильное меню при клике на ссылку
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        burger.classList.remove('open');
+        burger.setAttribute('aria-expanded', false);
+      });
+    });
+
+    /* ---- Переключение вкладок прайс-листа ---- */
+    function setPriceTab(cat) {
+      document.querySelectorAll('.price-tab').forEach(tab => {
+        const isActive = tab.dataset.cat === cat;
+        tab.classList.toggle('active', isActive);
+        tab.setAttribute('aria-selected', isActive);
+      });
+      document.querySelectorAll('.price-panel').forEach(panel => {
+        panel.classList.toggle('active', panel.dataset.cat === cat);
+      });
+    }
+
+    /* ---- Форма записи -> WhatsApp ---- */
+    function submitBooking(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('bf-name').value.trim();
+      const phone = document.getElementById('bf-phone').value.trim();
+      const service = document.getElementById('bf-service').value;
+      const time = document.getElementById('bf-time').value.trim();
+
+      let message = `Здравствуйте! Хочу записаться в La Luna.\nИмя: ${name}\nТелефон: ${phone}\nУслуга: ${service}`;
+      if (time) message += `\nУдобное время: ${time}`;
+
+      const url = `https://wa.me/77054620189?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank', 'noopener');
+
+      return false;
+    }
+
+    /* ============================================================
+       ДО/ПОСЛЕ — ЛУННЫЙ СЛАЙДЕР
+    ============================================================ */
+    (function () {
+      const viewport = document.getElementById('ba-viewport');
+      const handle = document.getElementById('ba-handle');
+      if (!viewport || !handle) return;
+
+      let dragging = false;
+
+      function setPercent(percent) {
+        percent = Math.max(0, Math.min(100, percent));
+        const activeSlide = viewport.querySelector('.ba-slide.active');
+        if (activeSlide) {
+          const beforePhoto = activeSlide.querySelector('.ba-photo--before');
+          if (beforePhoto) beforePhoto.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+        }
+        handle.style.left = percent + '%';
+        handle.setAttribute('aria-valuenow', Math.round(percent));
+
+        // Лунная фаза: тонкий месяц (0%) -> полная луна (100%)
+        const moonShadow = handle.querySelector('.ba-handle__moon-shadow');
+        if (moonShadow) {
+          moonShadow.style.transform = `translateX(${percent - 100}%)`;
+        }
+      }
+
+      function percentFromClientX(clientX) {
+        const rect = viewport.getBoundingClientRect();
+        return ((clientX - rect.left) / rect.width) * 100;
+      }
+
+      function onPointerDown(e) {
+        dragging = true;
+        handle.setPointerCapture && e.pointerId != null && handle.setPointerCapture(e.pointerId);
+        setPercent(percentFromClientX(e.clientX));
+      }
+
+      function onPointerMove(e) {
+        if (!dragging) return;
+        setPercent(percentFromClientX(e.clientX));
+      }
+
+      function onPointerUp() { dragging = false; }
+
+      viewport.addEventListener('pointerdown', onPointerDown);
+      window.addEventListener('pointermove', onPointerMove);
+      window.addEventListener('pointerup', onPointerUp);
+
+      // Клавиатура (доступность)
+      handle.addEventListener('keydown', (e) => {
+        const current = parseFloat(handle.getAttribute('aria-valuenow')) || 50;
+        if (e.key === 'ArrowLeft') { setPercent(current - 5); e.preventDefault(); }
+        if (e.key === 'ArrowRight') { setPercent(current + 5); e.preventDefault(); }
+      });
+
+      // Переключение вкладок-примеров
+      const thumbs = document.querySelectorAll('.ba-thumb');
+      thumbs.forEach(thumb => {
+        thumb.addEventListener('click', () => {
+          const goto = thumb.dataset.goto;
+
+          thumbs.forEach(t => { t.classList.toggle('active', t === thumb); t.setAttribute('aria-selected', t === thumb); });
+
+          viewport.querySelectorAll('.ba-slide').forEach(slide => {
+            slide.classList.toggle('active', slide.dataset.ba === goto);
+          });
+
+          setPercent(50);
+        });
+      });
+
+      // Стартовое положение
+      setPercent(50);
+    })();
+
+    /* ============================================================
+       ПОРТФОЛИО — ФИЛЬТР И КАРУСЕЛЬ
+    ============================================================ */
+    function setPortfolioFilter(filter, btn) {
+      document.querySelectorAll('.portfolio-chip').forEach(chip => chip.classList.toggle('active', chip === btn));
+      document.querySelectorAll('.portfolio-card').forEach(card => {
+        const match = filter === 'all' || card.dataset.cat === filter;
+        card.classList.toggle('hidden', !match);
+      });
+      const track = document.getElementById('portfolio-track');
+      if (track) track.scrollTo({ left: 0, behavior: 'smooth' });
+    }
+
+    (function () {
+      const track = document.getElementById('portfolio-track');
+      const prevBtn = document.getElementById('portfolio-prev');
+      const nextBtn = document.getElementById('portfolio-next');
+      if (!track || !prevBtn || !nextBtn) return;
+
+      function scrollByCards(direction) {
+        const card = track.querySelector('.portfolio-card:not(.hidden)');
+        const cardWidth = card ? card.getBoundingClientRect().width + 20 : 280;
+        track.scrollBy({ left: direction * cardWidth * 2, behavior: 'smooth' });
+      }
+
+      prevBtn.addEventListener('click', () => scrollByCards(-1));
+      nextBtn.addEventListener('click', () => scrollByCards(1));
+    })();
+
+    /* ============================================================
+       ПОЯВЛЕНИЕ ПРИ СКРОЛЛЕ
+    ============================================================ */
+    (function () {
+      const revealEls = document.querySelectorAll('.reveal');
+      if (!revealEls.length || !('IntersectionObserver' in window)) {
+        revealEls.forEach(el => el.classList.add('is-visible'));
+        return;
+      }
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      revealEls.forEach(el => observer.observe(el));
+    })();
+  </script>
+
+</body>
+</html>
