@@ -546,6 +546,109 @@
     }
 
     /* ============================================================
+       ХИРО — СЛАЙД-ШОУ ФОТО ИНТЕРЬЕРА
+    ============================================================ */
+    .hero-photo-stack {
+      position: relative;
+      width: 100%;
+      height: 320px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--color-dark);
+      box-shadow: 0 30px 70px rgba(26, 28, 58, 0.22);
+      animation: heroReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @media (min-width: 900px) {
+      .hero-photo-stack {
+        height: 100%;
+        border-radius: var(--radius-xl);
+      }
+    }
+
+    @keyframes heroReveal {
+      0%   { opacity: 0; transform: scale(0.94) translateY(16px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .hero-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transform: scale(1.0);
+      transition: opacity 1.6s ease;
+      animation: heroKenBurns 9s ease-in-out infinite alternate;
+    }
+
+    .hero-photo.active {
+      opacity: 1;
+      z-index: 2;
+    }
+
+    @keyframes heroKenBurns {
+      from { transform: scale(1.0); }
+      to   { transform: scale(1.09); }
+    }
+
+    .hero-photo-veil {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(26,28,58,0) 50%, rgba(26,28,58,0.60) 100%);
+    }
+
+    .hero-photo-caption {
+      position: absolute;
+      left: 22px;
+      bottom: 24px;
+      z-index: 4;
+      color: var(--color-white);
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(16px, 2vw, 20px);
+      text-shadow: 0 2px 14px rgba(0,0,0,0.35);
+      pointer-events: none;
+    }
+
+    .hero-photo-dots {
+      position: absolute;
+      right: 20px;
+      bottom: 26px;
+      z-index: 4;
+      display: flex;
+      gap: 8px;
+    }
+
+    .hero-photo-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.45);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .hero-photo-dot:hover { background: rgba(255,255,255,0.7); }
+
+    .hero-photo-dot.active {
+      background: var(--color-white);
+      width: 22px;
+      border-radius: 5px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-photo-stack { animation: none; opacity: 1; transform: none; }
+      .hero-photo { animation: none; transform: none; }
+    }
+
+    /* ============================================================
        УТИЛИТЫ
     ============================================================ */
     .visually-hidden {
@@ -1767,14 +1870,33 @@
 
       </div>
 
-      <!-- Визуал / плейсхолдер фото -->
+      <!-- Визуал: слайд-шоу фото интерьера студии -->
       <div class="hero-visual">
-        <div class="photo-placeholder" role="img" aria-label="Фото салона — скоро будет">
-          <span class="placeholder-icon" aria-hidden="true">🌙</span>
-          <span class="placeholder-label">
-            <span data-lang="ru" class="lang-active">Фото салона</span>
-            <span data-lang="kz">Салон фотосы</span>
-          </span>
+        <div class="hero-photo-stack" id="hero-photo-stack" role="img" aria-label="Интерьер студии La Luna">
+
+          <!-- 📸 Фото интерьера (циклический кроссфейд + эффект Кена Бёрнса) -->
+          <img src="img/interior_main.jpg" class="hero-photo active"
+               data-caption-ru="Основной зал" data-caption-kz="Негізгі зал"
+               alt="La Luna — основной зал">
+          <img src="img/interior_spa.jpg" class="hero-photo"
+               data-caption-ru="SPA-кабинет" data-caption-kz="SPA-кабинеті"
+               alt="La Luna — SPA-кабинет">
+          <img src="img/interior_aroma.jpg" class="hero-photo"
+               data-caption-ru="Зона ароматерапии" data-caption-kz="Хош иіс аймағы"
+               alt="La Luna — зона ароматерапии">
+
+          <!-- Затемнение снизу для читаемости подписи -->
+          <div class="hero-photo-veil" aria-hidden="true"></div>
+
+          <!-- Подпись текущего кадра -->
+          <span class="hero-photo-caption" id="hero-photo-caption">Основной зал</span>
+
+          <!-- Точки-переключатели -->
+          <div class="hero-photo-dots" role="tablist" aria-label="Фото интерьера">
+            <button class="hero-photo-dot active" data-goto="0" aria-label="Фото 1"></button>
+            <button class="hero-photo-dot" data-goto="1" aria-label="Фото 2"></button>
+            <button class="hero-photo-dot" data-goto="2" aria-label="Фото 3"></button>
+          </div>
         </div>
 
         <!-- Бэдж "Онлайн" -->
@@ -2756,6 +2878,9 @@
 
       // Атрибут lang на <html>
       document.documentElement.lang = lang === 'kz' ? 'kk' : 'ru';
+
+      // Обновляем подпись текущего фото в хиро-слайдшоу
+      if (window.updateHeroCaption) window.updateHeroCaption();
     }
 
     /* ---- Тень шапки при скролле ---- */
@@ -2916,6 +3041,52 @@
 
       prevBtn.addEventListener('click', () => scrollByCards(-1));
       nextBtn.addEventListener('click', () => scrollByCards(1));
+    })();
+
+    /* ============================================================
+       ХИРО — СЛАЙД-ШОУ ФОТО ИНТЕРЬЕРА
+    ============================================================ */
+    (function () {
+      const photos = Array.from(document.querySelectorAll('.hero-photo'));
+      const dots = Array.from(document.querySelectorAll('.hero-photo-dot'));
+      const captionEl = document.getElementById('hero-photo-caption');
+      if (!photos.length) return;
+
+      let idx = 0;
+      let timer = null;
+
+      function updateCaption() {
+        const active = photos[idx];
+        if (!active || !captionEl) return;
+        captionEl.textContent = currentLang === 'kz'
+          ? active.dataset.captionKz
+          : active.dataset.captionRu;
+      }
+
+      function goTo(i) {
+        idx = (i + photos.length) % photos.length;
+        photos.forEach((p, pi) => p.classList.toggle('active', pi === idx));
+        dots.forEach((d, di) => d.classList.toggle('active', di === idx));
+        updateCaption();
+      }
+
+      function startAutoplay() {
+        clearInterval(timer);
+        timer = setInterval(() => goTo(idx + 1), 5000);
+      }
+
+      dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+          goTo(parseInt(dot.dataset.goto, 10));
+          startAutoplay();
+        });
+      });
+
+      // Экспонируем для вызова из setLang() при смене языка
+      window.updateHeroCaption = updateCaption;
+
+      goTo(0);
+      startAutoplay();
     })();
 
     /* ============================================================
